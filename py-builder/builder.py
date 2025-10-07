@@ -1,17 +1,24 @@
+import os
 from compile_lists import *
-from os import *
+from os import system
 
-def COMPILE(COMPILER, FLAG, FILE) :
-    cmd = COMPILER+' '+FLAG+' -c '+FILE+'.C'
+def COMPILE(compiler, flag, file):
+    source_file = file + '.c'
+    obj_file = os.path.basename(file) + '.o'  # foo.o, main.o
+    cmd = f"{compiler} {flag} -c {source_file} -o {obj_file}"
+    print(f"[COMPILE] {cmd}")
+    system(cmd)
+    return obj_file
+
+def build(compiler, flag, obj_list, output):
+    cmd = f"{compiler} {flag} {' '.join(obj_list)} -o {output}"
+    print(f"[LINK] {cmd}")
     system(cmd)
 
-def build(COMPILER, FLAG, OBJS):
-    cmd = COMPILER+' '+FLAG+' '+OBJS+'-O '+PROGRAM
-    system(cmd)
-    
-objs = ''
-for i in FILES:
-    COMPILE(COMPILER_NAME, FLAGS, i)
-    objs = objs + i+'.o '
+# main build process
+obj_files = []
+for file in FILES:
+    obj = COMPILE(COMPILER_NAME, FLAGS, file)
+    obj_files.append(obj)
 
-build(COMPILER_NAME, FLAGS, objs)
+build(COMPILER_NAME, FLAGS, obj_files, PROGRAM)
