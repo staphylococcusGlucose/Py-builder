@@ -1,3 +1,4 @@
+#example
 PROGRAM = 'PROGRAM'
 COMPILER_NAME = 'clang'
 FLAGS = '-O2'
